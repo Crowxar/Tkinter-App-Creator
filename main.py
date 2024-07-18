@@ -14,6 +14,16 @@ def load_default_path():
     except FileNotFoundError:
         return ""
     
+def save_default_path(path):
+    data = {"default_path": path}
+    with open("tkinterapp.json", "w") as json_file:
+        json.dump(data, json_file)
+
+def on_path_change():
+
+    new_path = path_entry.get()
+    save_default_path(new_path)
+    
 def browse_folder():
     folder_path = path_var.get()
     if folder_path:
@@ -22,46 +32,78 @@ def browse_folder():
             path_var.set(selected_folder)
 
 def is_valid_size(value):
-    value_stripped = value.strip()
-    pattern = r"^\d+\s*x\s*\d+$"
-    return bool(re.match(pattern, value_stripped))
+    # Compile the regex pattern to match the size format
+    pattern = re.compile(r'^(\d+)\s*x\s*(\d+)$')
+    match = pattern.match(value)
+
+    if match:
+        width, height = match.groups()
+        return int(width),int(height)
+    else:
+        return False
 
 def is_valid_filename(filename):
     regex = r'^(?!^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])(\..*)?$)[^<>:"/\\|?*\x00-\x1F]+[^<>:"/\\|?*\x00-\x1F\ .]$'
     return re.match(regex, filename) is not None
 
-def final_check(formatted_title):
+def write_script():
+    formatted_title = title_var.get().strip().replace(" ", "_").lower()
     if not is_valid_filename(formatted_title):
         updatelabel.config(text="Invalid Filename")
-        return False
-    updatelabel.config(text="Click Submit When Done")
-    return True
-
-def write_script():
-    formatted_title = titlevar.get().strip().replace(" ", "_").lower()
-    if not final_check(formatted_title):
         return
-    
-    condition_1 = 1
-    if condition_1 == 1:
-        conditional_code_1 = con.cond_1A
-    elif condition_1 == 2:
-        conditional_code_1 = con.cond_1B
     else:
-        conditional_code_1 = con.default_code_block
+        valid_title = formatted_title
+
+    updated_size = size_val.get().strip().lower()
+    if not size_var.get():
+        # size_var is False
+        size_tuple = is_valid_size(updated_size)  # Validate size
+        if not size_tuple:
+            updatelabel.config(text="Invalid Size")
+            return
+        else:
+            valid_size = size_tuple  # Set the updated_size to the tuple
+    else:
+        # size_var is True
+        valid_size = 'default'
+
+    # Print the values for debugging
+    print("Formatted Title:", valid_title)
+    print("Updated Size:", valid_size)
+
+
+    updatelabel.config(text="Completed")
+    on_path_change()
+
+    
+    if valid_size == 'default':
+        segment_one = con.AppSetup_1A
+    else: #if its a tuple
+        segment_one = con.AppSetup_1B.format(
+            app_width=valid_size[0],
+            app_height=valid_size[1])
 
     script_content = con.base_template.format(
         title = formatted_title,
-        conditional_code_1 = conditional_code_1
+        AppSetup = segment_one
     )
     path = os.path.join(path_var.get(), f"{formatted_title}.py")
     try:
         with open(path, "w") as file:
             file.write(script_content)
         updatelabel.config(text="Script created successfully!")
-        app.destroy()
+ #       app.destroy()
     except Exception as e:
         updatelabel.config(text=f"Error: {e}")
+
+def toggle_size():
+    if size_var.get():
+        size_entry.config(state='disabled')
+    else:
+        size_entry.config(state='normal')
+
+
+
 #endregion
 
 #region ===App Setup===
@@ -86,7 +128,9 @@ if default_path:
 else:
     path_var = tk.StringVar(value=os.getcwd())
 
-titlevar = tk.StringVar(value='')
+title_var = tk.StringVar(value='')
+size_var = tk.BooleanVar(value=True)
+size_val = tk.StringVar(value='')
 #endregion
 
 #region ===Widgets===
@@ -100,8 +144,13 @@ path_button.grid(row=1, column=0,padx=10, pady=(5, 2))
 
 title_label = ttk.Label(app,text="Title",font=("Arial", 12))
 title_label.grid(row=2,column=0,padx=10,pady=(5, 2))
-title_entry = ttk.Entry(app,width=20,textvariable=titlevar)
+title_entry = ttk.Entry(app,width=20,textvariable=title_var)
 title_entry.grid(row=2,column=1,padx=10)
+
+size_checkbox = ttk.Checkbutton(app, text='Auto Size', variable=size_var, command=toggle_size)
+size_checkbox.grid(row=3, column=0, padx=10, pady=(5,2))
+size_entry = ttk.Entry(app, state='disabled', textvariable=size_val)
+size_entry.grid(row=3, column=1, padx=10, pady=(5,2))
 
 updatelabel = ttk.Label(app,text="Click Submit When Done",font=("Arial", 12))
 updatelabel.grid(row=5,column=0,columnspan=2,padx=10,pady=2)
@@ -120,5 +169,5 @@ title_entry.bind("<Return>", lambda event: complete_button.invoke())
 app.focus_force()
 app.wm_attributes('-topmost', 1)
 app.mainloop()
-#os.system('cls')
+# os.system('cls')
 #endregion

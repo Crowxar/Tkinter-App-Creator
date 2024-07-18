@@ -12,7 +12,7 @@ from tkinter import ttk
 #region ===App Setup===
 app = tk.Tk()
 app.title("{title}")
-{conditional_code_1}
+{AppSetup}
 # Conditional block 1 end
 
 #endregion
@@ -35,7 +35,7 @@ app.mainloop()
 """
 
 
-cond_1A = """
+AppSetup_1A = """
 screen_width = app.winfo_screenwidth()
 screen_height = app.winfo_screenheight()
 app_width = app.winfo_reqwidth()
@@ -46,11 +46,17 @@ app.geometry(f"+{x}+{y}")
 app.resizable(False, False)
 """
 
-cond_1B = """
-print("Condition 1B is true")
-for i in range(3):
-    print(f"Loop iteration {i}")
-"""
-default_code_block = """
-print("No specific conditions met")
+AppSetup_1B = """
+screen_width = app.winfo_screenwidth()
+screen_height = app.winfo_screenheight()
+app_width = {app_width}
+app_height = {app_height}
+x = (screen_width - app_width) // 2
+y = (screen_height - app_height) // 5
+app.geometry(f"{{app_width}}x{{app_height}}+{{x}}+{{y}}")
+app.resizable(False, False)
+
+
+label = tk.Label(app, text="Hello, tkinter!")
+label.pack()
 """
