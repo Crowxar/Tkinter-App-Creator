@@ -21,7 +21,7 @@ def browse_folder():
         if selected_folder:
             path_var.set(selected_folder)
 
-def is_valid_size(value):
+def validate_format(value):
     value_stripped = value.strip()
     pattern = r"^\d+\s*x\s*\d+$"
     return bool(re.match(pattern, value_stripped))
@@ -42,18 +42,7 @@ def write_script():
     if not final_check(formatted_title):
         return
     
-    condition_1 = 1
-    if condition_1 == 1:
-        conditional_code_1 = con.cond_1A
-    elif condition_1 == 2:
-        conditional_code_1 = con.cond_1B
-    else:
-        conditional_code_1 = con.default_code_block
-
-    script_content = con.base_template.format(
-        title = formatted_title,
-        conditional_code_1 = conditional_code_1
-    )
+    script_content = con.base_template.format()
     path = os.path.join(path_var.get(), f"{formatted_title}.py")
     try:
         with open(path, "w") as file:
@@ -122,3 +111,53 @@ app.wm_attributes('-topmost', 1)
 app.mainloop()
 #os.system('cls')
 #endregion
+
+"""
+#region ===Functions===
+
+
+
+
+def validate_format(value):
+    value_stripped = value.strip()
+    pattern = r"^\d+\s*x\s*\d+$"
+    return bool(re.match(pattern, value_stripped))
+
+def save_default_path(path):
+    data = {"default_path": path}
+    with open("default_path.json", "w") as json_file:
+        json.dump(data, json_file)
+
+def on_path_change():
+    new_path = path_entry.get()
+    save_default_path(new_path)
+
+
+
+def Complete(path=None, title=None, center=True, size=None, updatelabel=None):
+    if path is None or not os.path.exists(path):
+        updatelabel.config(text="Invalid Path")
+        return
+    if title is None or title.strip() == "":
+        updatelabel.config(text="Need Title")
+        return
+    if size_var.get():
+        size_tuple = ("app.winfo_reqwidth()", "app.winfo_reqheight()")
+    else:
+        size_bool = validate_format(size)
+        if not size_bool:
+            updatelabel.config(text="Invalid Size: Width x Height")
+            return
+
+        width_str, height_str = size.split("x")
+        size_tuple = (int(width_str), int(height_str))
+
+    updatelabel.config(text="Submitted Successfully")
+    title = "_".join(title.lower().strip().split())
+    on_path_change()
+    create_file(path, title, center, size_tuple)
+
+
+
+#endregion
+"""

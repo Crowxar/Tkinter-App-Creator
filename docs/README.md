@@ -6,6 +6,15 @@
 - Core documentation set up and put in place
 - Basic app layout constructed
 
+## 📖 Usage 
+
+To use this project, follow these steps:
+1. Clone the repository
+2. Run the application with `python main.py`
+3. Fill out the appropriate fields and click submit. A preconfigured file should be created at your specified directory. 
+4. Let me know if you run into any errors
+
+
 ## 🗺️ Roadmap
 
 ### 📋 In Progress
@@ -63,10 +72,11 @@ This only applies to adaptations/changes of the designer itself - tkinter applic
 See the LICENSE file for details.
 
 ### How to Credit
-Ensure this code snipet is somewhere within your 'Licenses' or 'About' section
+Ensure this code snipets is somewhere within your 'Licenses' or 'About' section
 
-```Tkinter App Designer - Open Source Project by Crowxar
-Created by [Crowxar](https://crowxar.github.io/)
+```
+Tkinter App Designer - An Open-Source Project
+Created by Crowxar - https://crowxar.github.io/
 Licensed under CC BY-NC-SA 4.0
 Source: https://github.com/Crowxar/Tkinter-App-Creator
- ```
+```
