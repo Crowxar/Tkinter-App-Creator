@@ -7,7 +7,7 @@
 - Basic app layout constructed
 
 ## 📖 Usage 
-
+### Project is not in a stable spot and is currently undergoing heavy maintence!!
 To use this project, follow these steps:
 1. Clone the repository
 2. Run the application with `python main.py`
