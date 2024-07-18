@@ -1,6 +1,6 @@
 # ✨ Tkinter App Designer
 
-[Tkinter App Designer](https://github.com/Crowxar/Tkinter-App-Creator) is an open source project by [Crowxar](https://crowxar.github.io/). Sick of having to type in all the basic file structure for various tkinter applications, I created this for streamlining Tkinter application developmen, as well as practice my skills with tkinter. 
+[Tkinter App Designer](https://github.com/Crowxar/Tkinter-App-Creator) is an open source project by [Crowxar](https://crowxar.github.io/). Sick of having to type in all the basic file structure for various tkinter applications, I created this for streamlining Tkinter application developmen, as well as practice my skills with tkinter. Licensed under the CC BY-NC-SA 4.0 License. See below for more information. 
 
 ## ✔️ Completed Features
 - Core documentation set up and put in place
@@ -42,7 +42,7 @@
 
 ## 👥 Contributing and Feedback
 
-Contributions are welcome! Please feel free to submit a Pull Request. I do ask that the changes be PEP-8 compliant. I can be reached easily via discord at Crowxar. Feel free to message me with ideas!
+Feel free to contribute to this project by submitting a Pull Request. Please ensure that any changes follow the PEP-8 guidelines for code style consistency. You can easily reach me on Discord at Crowxar to discuss ideas or for any questions you may have. I look forward to collaborating with you!
 
 ## 📄 License
 
