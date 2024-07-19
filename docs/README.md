@@ -1,7 +1,9 @@
 # ✨ Tkinter App Designer
-## Project is not in a stable spot and is currently undergoing heavy maintence!!
 
 [Tkinter App Designer](https://github.com/Crowxar/Tkinter-App-Creator) is an open source project by [Crowxar](https://crowxar.github.io/). Sick and tired of repeatedly setting up the basic file structure for various Tkinter applications, I created this to streamline Tkinter application development and enhance my skills with Tkinter. This project is licensed under the CC BY-NC-SA 4.0 License. See below for more details.
+
+- Current Version: `v0.4.0`
+- Release Date: 19 July 2024
 
 ## ✔️ Completed Features
 - Core documentation set up and put in place
