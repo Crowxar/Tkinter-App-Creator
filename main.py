@@ -10,7 +10,11 @@ def load_default_path():
     try:
         with open('tkinterapp.json', 'r') as json_file:
             data = json.load(json_file)
-            return data.get('default_path', '')
+            path = data.get('default_path', '')
+            if os.path.exists(path):
+                return path
+            else:
+                return ''
     except FileNotFoundError:
         return ''
     
