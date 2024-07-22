@@ -1,7 +1,5 @@
 base_template_without_regions = """# This is a generated script made with Tkinter App Creator by Crowxar - https://crowxar.github.io/
-import tkinter as tk
-from tkinter import ttk
-import os
+{Imports}
 
 app = tk.Tk()
 app.title("{Title}")
@@ -22,9 +20,7 @@ app.mainloop()
 
 base_template_with_regions = """# This is a generated script made with Tkinter App Creator by Crowxar - https://crowxar.github.io/
 #region ===Imports===
-import tkinter as tk
-from tkinter import ttk
-import os
+{Imports}
 
 #endregion
 
@@ -119,3 +115,12 @@ screen_height = app.winfo_screenheight()
 pos_x = (screen_width - app_width) // 2
 pos_y = (screen_height - app_height) // 2
 app.geometry(f"{{app_width}}x{{app_height}}")"""
+
+imports_1A = """import tkinter as tk
+from tkinter import ttk
+"""
+
+imports_1B = """import tkinter as tk
+from tkinter import ttk
+import os
+"""

@@ -9,24 +9,19 @@ import os
 
 # endregion
 
+
 # region ===Debug===
 def Debug_Test():
     formatted_title = title_var.get().strip().replace(" ", "_").lower()
     filename = formatted_title + ".py"
     file_path = os.path.normpath(os.path.join(path_var.get(), filename))
     os.remove(file_path)
-    print(f"Deleted File {filename}")
 
-def callback(*args):
-    print(f"the variable has changed to '{selected_size_option.get()}'")
 
-def debug_cmd():
-    print(selected_size_option.get())
-    print(f"center {center_var.get()}")
-
-#endregion
+# endregion
 
 # region ===Functions===
+
 
 def browse_folder():
     folder_path = path_var.get()
@@ -38,8 +33,7 @@ def browse_folder():
 
 def togglebox_entry(event=None):
     selected_option = dropdown.get()
-    print(f"the variable has changed to '{selected_option}'")
-    if selected_option == 'Custom':
+    if selected_option == "Custom":
         size_entry.config(state=tk.NORMAL)
         size_entry.insert(0, "width x height")
     else:
@@ -80,7 +74,7 @@ def is_valid_filename(filename):
 
 
 def validate_path(title):
-    path = os.path.join(path_var.get(), f"{title}")
+    path = os.path.join(path_var.get(), f"{title}.py")
     # path = os.path.join(path_var.get(), f"{title}.py")
 
     if os.path.exists(path):
@@ -99,7 +93,8 @@ def validate_size(value):
         return int(width), int(height)
     else:
         return False
-    
+
+
 def write_file(path, contents):
     try:
         # Create an empty file or write some initial content if needed
@@ -107,6 +102,7 @@ def write_file(path, contents):
             file.writelines(contents)
         updatelabel.config(text="Script created successfully!")
         save_default_path()
+        app.destroy()
     except FileNotFoundError:
         updatelabel.config(text="Invalid Path: File not found")
         return None
@@ -117,6 +113,21 @@ def write_file(path, contents):
         updatelabel.config(text=f"An error occurred: {e}")
         return None
 
+
+def reset_app():
+    title_var.set(value="")
+    path_var.set(value=load_default_path())
+    selected_size_option.set("1/2 Screen")
+    center_var.set(value=True)
+    resize_var.set(value=True)
+    regions_var.set(value=False)
+    forcetop_var.set(value=True)
+    clear_var.set(value=False)
+    size_entry.delete(0, tk.END)
+    size_entry.config(state=tk.DISABLED)
+    updatelabel.config(text="App Reset")
+
+
 def create_file():
     # validate title
     formatted_title = title_var.get().strip().replace(" ", "_").lower()
@@ -125,7 +136,7 @@ def create_file():
         return
     else:
         valid_title = formatted_title
-    
+
     # validate path
     validated_path = validate_path(valid_title)
     if not validated_path:
@@ -141,69 +152,57 @@ def create_file():
         else:
             validated_size = size_tuple
 
-    deb_validated_path = validated_path + "+dbg"
     # regions
     if regions_var.get():  # if regions are enabled
-        deb_validated_path = deb_validated_path + "+rgn"
         base_temp = con.base_template_with_regions
     else:  # if they're not enabled
         base_temp = con.base_template_without_regions
-    
-    if center_var.get() == True:
-        deb_validated_path = deb_validated_path + "+ctr"
+
+    if center_var.get():
         if size_config == "Custom":
             configured_size = con.custom_size_cent.format(
-                window_width = validated_size[0],
-                window_height = validated_size[1]
+                window_width=validated_size[0], window_height=validated_size[1]
             )
-        elif size_config == "1/2":
+        elif size_config == "1/2 Screen":
             configured_size = con.half_size_cent
         else:
             configured_size = con.fit_sized_cent
     else:
         if size_config == "Custom":
             configured_size = con.custom_size_ncent.format(
-                window_width = validated_size[0],
-                window_height = validated_size[1]
+                window_width=validated_size[0], window_height=validated_size[1]
             )
         elif size_config == "1/2":
             configured_size = con.half_size_ncent
         else:
             configured_size = con.fit_sized_cent
-        
-    #resize
-    if resize_var.get() == True:
-        deb_validated_path = deb_validated_path + "+rsz"
-        resize_con = """app.resizable(False, False)"""
-    else:
+
+    # resize
+    if resize_var.get():
         resize_con = """"""
-    #forcetop
-    if forcetop_var.get() == True:
-        deb_validated_path = deb_validated_path + "+frc"
+    else:
+        resize_con = """app.resizable(False, False)"""
+    # forcetop
+    if forcetop_var.get():
         force_con = """app.focus_force()\napp.wm_attributes("-topmost", 1)"""
     else:
         force_con = """"""
-    #clear term
-    if clear_var.get() == True:
-        deb_validated_path = deb_validated_path + "+clr"
+    # clear term
+    if clear_var.get():
         clearterm_con = """os.system('cls')"""
+        import_con = con.imports_1B
     else:
         clearterm_con = """"""
+        import_con = con.imports_1A
     script_content = base_temp.format(
-            Title = valid_title,
-            SizeCon = configured_size,
-            ResizeCon = resize_con,
-            ForceTop = force_con,
-            ClearTerm = clearterm_con
-        )
-    print(deb_validated_path)
-    validated_path = deb_validated_path + ".py"
+        Title=valid_title,
+        Imports=import_con,
+        SizeCon=configured_size,
+        ResizeCon=resize_con,
+        ForceTop=force_con,
+        ClearTerm=clearterm_con,
+    )
     write_file(validated_path, script_content)
-    
-
-    # iterate over file with size
-    # check checked boxes and iterate over
-    ...
 
 
 # endregion
@@ -224,100 +223,91 @@ app.resizable(False, False)
 
 # endregion
 
-# region ===Data/Variables===
+# region ===Widgets===
+# App title
+label = ttk.Label(app, text="Tkinter File Creator!", font=("Arial Bold", 12))
+label.grid(row=0, column=0, columnspan=2)
+
+# Title label
+title_label = ttk.Label(app, text="Title of App", font=("Arial", 12), anchor="center")
+title_label.grid(row=1, column=0, sticky="EW", padx=5, pady=3)
+
+# Title entry box
+title_var = tk.StringVar(value="")
+title_entry = ttk.Entry(app, textvariable=title_var, width=13)
+title_entry.grid(row=1, column=1, sticky="EW", padx=(5, 10), pady=3)
+
+# Path browser
+path_button = tk.Button(app, text="Path Browse", command=browse_folder)
+path_button.grid(row=2, column=0, sticky="EW", padx=5, pady=3)
+
+# Path entry
 default_path = load_default_path()
 if default_path:
     path_var = tk.StringVar(value=default_path)
 else:
     path_var = tk.StringVar(value=os.getcwd())
 
-title_var = tk.StringVar(value="Write Test")
-
-# endregion
-
-# region ===Widgets===
-# App title
-label = ttk.Label(app, text="Tkinter File Creator!", font=("Arial", 18))
-label.grid(row=0, column=0, columnspan=2)
-
-# Path browser
-path_button = tk.Button(app, text="Path Browse", command=browse_folder)
-path_button.grid(row=1, column=0, padx=(10, 0), pady=(5, 2), sticky="w")
-
-# Path entry
-path_entry = ttk.Entry(app, width=20, textvariable=path_var)
-path_entry.grid(row=1, column=1, sticky="w")
-
-# Title label
-title_label = ttk.Label(app, text="Title", font=("Arial", 12))
-title_label.grid(row=2, column=0)
-
-# Title entry box
-title_entry = ttk.Entry(app, width=20, textvariable=title_var)
-title_entry.grid(row=2, column=1)
+path_entry = ttk.Entry(app, textvariable=path_var, width=12)
+path_entry.grid(row=2, column=1, sticky="EW", padx=(5, 10), pady=3)
 
 # Size dropdown w/ textbox to enable/disable
 selected_size_option = tk.StringVar()
 dropdown = ttk.Combobox(
     app,
-    values=("1/2", "Fit", "Custom"),
+    values=("1/2 Screen", "Fit", "Custom"),
     justify="center",
     state="readonly",
-    textvariable=selected_size_option
+    textvariable=selected_size_option,
+    width=8,
 )
-dropdown.set("1/2")
+dropdown.set("1/2 Screen")
 dropdown.option_add("*TCombobox*Listbox.Justify", "center")
-dropdown.grid(row=3, column=0)
+dropdown.grid(row=3, column=0, sticky="EW", padx=5, pady=3)
 
 # Size Entry Box
 size_enabled_var = tk.BooleanVar(value=False)
-size_entry = ttk.Entry(app, width=20, state=tk.DISABLED)
-size_entry.grid(row=3, column=1)
-
+size_entry = ttk.Entry(app, state=tk.DISABLED, width=12)
+size_entry.grid(row=3, column=1, sticky="EW", padx=(5, 10), pady=3)
 
 # Center checkbox
 center_var = tk.BooleanVar(value=True)
 center_checkbox = ttk.Checkbutton(app, text="Center App", variable=center_var)
-center_checkbox.grid(row=4, column=0)
+center_checkbox.grid(row=4, column=0, sticky="W", padx=5, pady=3)
 
 # Resizeable checkbox
 resize_var = tk.BooleanVar(value=True)
 resize_checkbox = ttk.Checkbutton(app, text="Resizeable", variable=resize_var)
-resize_checkbox.grid(row=4, column=1)
+resize_checkbox.grid(row=4, column=1, sticky="W", padx=5, pady=3)
 
 # Regions checkbox
-regions_var = tk.BooleanVar(value=True)
+regions_var = tk.BooleanVar(value=False)
 regions_checkbox = ttk.Checkbutton(app, text="Set Regions", variable=regions_var)
-regions_checkbox.grid(row=5, column=0)
+regions_checkbox.grid(row=5, column=0, sticky="W", padx=5, pady=3)
 
 # Force on top checkbox
 forcetop_var = tk.BooleanVar(value=True)
 forcetop_checkbox = ttk.Checkbutton(app, text="Force Top", variable=forcetop_var)
-forcetop_checkbox.grid(row=5, column=1)
+forcetop_checkbox.grid(row=5, column=1, sticky="W", padx=5, pady=3)
 
 # Clear terminal checkbox
-clear_var = tk.BooleanVar(value=True)
+clear_var = tk.BooleanVar(value=False)
 clearterm_checkbox = ttk.Checkbutton(app, text="Clear Terminal", variable=clear_var)
-clearterm_checkbox.grid(row=6, column=0)
+clearterm_checkbox.grid(row=6, column=0, sticky="W", padx=5, pady=3)
 
 # Reset button 0/7
-reset_button = ttk.Button(app, text="Reset", command=Debug_Test)
-reset_button.grid(row=7, column=0)
+reset_button = ttk.Button(app, text="Reset", command=reset_app)
+reset_button.grid(row=7, column=0, sticky="EW", padx=5, pady=3)
 
 # Submit button 1/7
 complete_button = ttk.Button(app, text="Submit", command=create_file)
-complete_button.grid(row=7, column=1, pady=10)
+complete_button.grid(row=7, column=1, sticky="EW", padx=5, pady=3)
 
 
 # Update Label
 updatelabel = ttk.Label(app, text="Click Submit When Done", font=("Arial", 12))
-updatelabel.grid(row=8, column=0, columnspan=2, padx=10, pady=2)
+updatelabel.grid(row=8, column=0, columnspan=2)
 
-# Debug Button
-
-debug_button = ttk.Button(app, text="Debug", command=debug_cmd)
-debug_button.grid(row=9, column=0, columnspan=2)
-# endregion
 
 # region ===Bindings===
 dropdown.bind("<<ComboboxSelected>>", togglebox_entry)
