@@ -1,3 +1,15 @@
+## [0.9.0] - 2024-07-22
+### Added
+- Updated UI layout to look a little cleaner
+- Several Widget Toggles  
+    - Center app
+    - Toggle Resizeability
+    - Force app to be on top
+    - Clear the terminal once app closes
+    - Set regions for IDE collapsing
+- Reset button to clear app and reset to default setttings
+- Functionally the app is completed. Will update later for beautification
+
 ## [0.4.0] - 2024-07-19
 ### Added
 - Core features, .gitignore
@@ -9,7 +21,6 @@
 
 ### Bug Fixes
 - Fixed json path - if file didnt exist checking would default to "" -- added file path checking to default to current directory if path didnt exist
-
 
 ## [0.0.1] - 2024-07-17
 

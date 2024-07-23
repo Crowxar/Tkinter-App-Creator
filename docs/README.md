@@ -2,17 +2,17 @@
 
 [Tkinter App Designer](https://github.com/Crowxar/Tkinter-App-Creator) is an open source project by [Crowxar](https://crowxar.github.io/). Sick and tired of repeatedly setting up the basic file structure for various Tkinter applications, I created this to streamline Tkinter application development and enhance my skills with Tkinter. This project is licensed under the CC BY-NC-SA 4.0 License. See below for more details.
 
-- Current Version: `v0.4.0`
-- Release Date: 19 July 2024
+- Current Version: `v0.9.0`
+- Release Date: 22 July 2024
 
 ## ✔️ Completed Features
-- Core documentation set up and put in place
-- Basic app layout constructed
-- Directory Pathing (Remembers your last path, used so you don't need to reselect every time!)
-- Title error checking (making sure the file destination and name are valid)
-- Customizable Size (Auto/Custom)
-  - Error checking for this as well to ensure its in a "## x ##" format. 
-- Errors will display on the bottom as "Invalid Path/ Invalid size/ ect
+- Creates baseline framework for tkinter apps through python. 
+- Set a Title and a Path and click "Submit". The app will close and your file will be made in your directory
+  - Options to allow for different sizes ( Width x Height ) format
+  - Center the app on your screen
+  - Lock resizeability
+  - Force the app to be on top of all other windows
+  - Enable the app to clear the terminal once the root window is closed (helpful for debugging)
 
 ## 📖 Usage 
 
@@ -25,15 +25,13 @@ To use this project, follow these steps:
 
 ## 🗺️ Roadmap
 
+### Functionally the app is completed - I intend to make it look better later with tkinter designer
 ### 📋 In Progress
-- Center / Resizeable Checkboxes
-- Toggle for regions
-- Clear terminal option
-- Force focus/top option
-- Code collapsable regions
-    - Imports, Functions, Setup, Data, Widgets, Events, Run
 
-### 📅 Planned Features
+Make the App look better - possibly using tkitner designer. 
+
+### 📅 Planned Features for the future - not in progress right now
+- tkinter-designer integration for easy GUI setup
 
 - Color Pallet Generator
     - Potential live color preview (Select a color and the app changes to see)
@@ -43,8 +41,8 @@ To use this project, follow these steps:
     - Toggleable between auto, manual sized, and default 1/2 screen size, maybe additional defaults for dropdown
 
 - App changes
-    - Submit and close button as well
     - Save config button for entire app
+    
 ### 💭 Potential Feature Ideas
 
 - Widget creator - w/ methods
